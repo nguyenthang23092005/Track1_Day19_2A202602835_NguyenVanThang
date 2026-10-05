@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VLearn — Option A: AI Dẫn dắt (Trước kích hoạt → Chẩn đoán & Lựa chọn)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="vlearn-header">
+    <div class="vlearn-nav-inner">
+      <div class="brand-wrapper">
+        <div class="brand-badge">VLearn</div>
+        <div class="course-crumb">
+          <span>AI Engineering</span>
+          <span class="crumb-sep">/</span>
+          <span>Bài 4: Chunking &amp; Retrieval</span>
+          <span class="crumb-sep">/</span>
+          <span class="crumb-active">Option A (AI Dẫn dắt)</span>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <span class="human-ai-pill pill-act">AI-Initiated • Dẫn dắt</span>
+        <a href="index.html" class="btn-reset-nav">🏠 Trang chủ</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="app-container">
+
+    <!-- Common Lesson Context Reminder (70% shared fixture) -->
+    <div class="card lesson-context-card" style="padding: 16px 20px; margin-bottom: 20px;">
+      <div class="lesson-meta" style="margin-bottom: 6px;">
+        <span class="badge badge-purple">Bối cảnh chung (Bài 4 RAG)</span>
+        <span class="badge badge-danger">Sai Quiz 2 lần (Overlap 0 từ &amp; k=1)</span>
+        <span class="badge badge-info">Slide 8-10 đã mở 2 lần</span>
+      </div>
+      <div style="font-size: 13.5px; color: var(--text-secondary);">
+        <b>Tình huống mắc kẹt:</b> Bạn đang làm bài trắc nghiệm cuối bài về <i>Chunk Overlap</i> và <i>Top-k Retrieval</i> nhưng bị sai liên tiếp 2 lần, chưa thể qua bài.
+      </div>
+    </div>
+
+    <!-- Main Interaction Container -->
+    <section class="card" style="border-top: 4px solid #F59E0B;">
+      
+      <!-- Option Header & Step Indicator -->
+      <div class="interaction-header">
+        <div>
+          <div class="interaction-meta-top">
+            <span class="option-letter letter-a">OPTION A</span>
+            <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Nguyễn Anh Dũng phụ trách</span>
+          </div>
+          <h2 class="interaction-title" id="stage-title">Màn 1: Trạng thái TRƯỚC KHI KÍCH HOẠT</h2>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <span class="badge" id="step-badge" style="background:#FEF3C7; color:#92400E; font-size:12px;">Bước 1 / 2</span>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- STAGE 1: TRƯỚC KHI KÍCH HOẠT (Pre-activation) -->
+      <!-- ========================================== -->
+      <div id="screen-a1">
+        <div class="quiz-failure-box" style="margin-top: 0;">
+          <div style="font-weight: 700; color: #9F1239; margin-bottom: 6px;">
+            ⚠️ Bạn vừa nộp bài Quiz lần thứ 2 không thành công:
+          </div>
+          <div style="font-size: 13.5px; color: #881337; line-height: 1.5;">
+            • Câu 1 (Chunk Overlap): Chọn <i>"0 từ"</i> — Sai.<br>
+            • Câu 2 (Top-k Retrieval): Chọn <i>"k=1 luôn tốt nhất"</i> — Sai.
+          </div>
+        </div>
+
+        <!-- AI Pre-activation Trigger Banner -->
+        <div style="background: #FFFBEB; border: 2px solid #FCD34D; border-radius: var(--radius-md); padding: 20px; margin: 20px 0; text-align: center;">
+          <div style="font-size: 32px; margin-bottom: 8px;">🤖</div>
+          <h3 style="font-size: 17px; font-weight: 800; color: #92400E; margin-bottom: 6px;">
+            Trợ lý AI nhận diện bạn đang gặp khó khăn!
+          </h3>
+          <p style="font-size: 14px; color: #78350F; max-width: 580px; margin: 0 auto 16px;">
+            Hệ thống có thể quét lại nhật ký học tập và đề xuất giải pháp ôn tập bổ túc phù hợp nhất cho bạn. Bạn có muốn kích hoạt không?
+          </p>
+
+          <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="goToStepA(2)" style="background: #D97706; border-color: #B45309;">
+              ⚡ Kích hoạt AI Gợi ý chẩn đoán ngay
+            </button>
+            <a href="index.html" class="btn btn-secondary">
+              Không cần, tự xem lại Slide
+            </a>
+          </div>
+        </div>
+
+        <div style="font-size: 13px; color: var(--text-muted); text-align: center;">
+          <i>Trạng thái: AI chờ người dùng bấm kích hoạt trước khi can thiệp.</i>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- STAGE 2: TÍCH HỢP — TRÊN LÀ CHẨN ĐOÁN, DƯỚI LÀ LỰA CHỌN -->
+      <!-- ========================================== -->
+      <div id="screen-a2" class="hidden">
+        
+        <!-- PHẦN TRÊN: CHẨN ĐOÁN CỦA AI -->
+        <div style="border-bottom: 2px dashed #FDE68A; padding-bottom: 20px; margin-bottom: 22px;">
+          
+          <div class="expectation-banner" style="background: #FFFBEB; border-color: #FCD34D; margin-bottom: 14px;">
+            <span class="exp-icon">💡</span>
+            <div>
+              <b>AI đã phân tích xong:</b> Dựa trên 2 lỗi sai trong Quiz và dữ liệu bạn đã xem 18 phút video Embedding, AI đưa ra kết luận chẩn đoán dưới đây:
+            </div>
+          </div>
+
+          <!-- AI Diagnosis & Suggestion Box -->
+          <div class="refresher-card" style="border-color: #F59E0B; background: #FFFDF5; margin-top: 10px;">
+            <div class="refresher-header" style="border-bottom-color: #FDE68A;">
+              <div>
+                <span class="badge" style="background:#FEF3C7; color:#92400E; margin-bottom: 4px;">🎯 Kết luận chẩn đoán của AI</span>
+                <h3 class="refresher-title" style="color: #92400E;">Khái niệm cần bổ túc: "Cơ chế Chunk Overlap (Khoảng gối)"</h3>
+              </div>
+              <span class="badge badge-success">Độ liên quan: 92%</span>
+            </div>
+
+            <div class="refresher-body">
+              <p style="font-size: 14.5px; color: #451A03; line-height: 1.6;">
+                <b>Lý do AI chẩn đoán:</b> Bạn chọn overlap = 0 từ vì nghĩ tiết kiệm bộ nhớ. Nhưng nếu overlap = 0, một câu văn dài sẽ bị cắt đứt làm hai nửa ở đường phân giới. Cả 2 nửa đều mất ngữ cảnh hoàn chỉnh khiến mô hình sinh trả lời sai lệch.
+              </p>
+
+              <div class="refresher-analogy-box" style="border-left-color: #D97706; background: #FFFBEB; color: #78350F;">
+                <b>💡 Minh họa trực quan:</b> Giống như xếp ngói lợp mái nhà: Các viên ngói phải gối lên nhau ít nhất 20% mép để nước mưa không dột vào trong. Chunk overlap đóng vai trò là phần ngói gối đầu để không dột mất thông tin.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PHẦN DƯỚI: LỰA CHỌN CỦA NGƯỜI HỌC -->
+        <div>
+          <div style="margin-bottom: 14px;">
+            <span class="badge badge-purple" style="font-size: 13px; padding: 5px 12px;">
+              👇 Lựa chọn của bạn đối với gợi ý của AI:
+            </span>
+            <p style="font-size: 13.5px; color: var(--text-secondary); margin-top: 6px;">
+              Bạn là người ra quyết định cuối cùng. Hãy chọn một trong các thao tác dưới đây:
+            </p>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px; margin: 16px 0;">
+            
+            <!-- Choice 1: Accept -->
+            <div class="concept-node-card" onclick="userDecision('accept')" style="border-left: 4px solid #16A34A;">
+              <div class="node-left">
+                <div class="node-icon-box" style="background: #DCFCE7; color: #166534;">✅</div>
+                <div class="node-title-group">
+                  <h4>Lựa chọn 1: Đồng ý với gợi ý của AI &amp; Làm lại Quiz ngay</h4>
+                  <p>Tiếp thu kiến thức Chunk Overlap và quay lại làm câu trắc nghiệm số 1.</p>
+                </div>
+              </div>
+              <button class="btn btn-primary" style="background: #16A34A; font-size: 13px; padding: 8px 14px;">Chọn lựa chọn này</button>
+            </div>
+
+            <!-- Choice 2: Request Alternative Topic -->
+            <div class="concept-node-card" onclick="userDecision('switch')" style="border-left: 4px solid #4F46E5;">
+              <div class="node-left">
+                <div class="node-icon-box" style="background: #EEF2FF; color: #4338CA;">🔄</div>
+                <div class="node-title-group">
+                  <h4>Lựa chọn 2: Yêu cầu AI đổi sang giải thích câu "Top-k Retrieval"</h4>
+                  <p>Người dùng chủ động can thiệp, yêu cầu AI đổi trọng tâm sang câu hỏi thứ 2.</p>
+                </div>
+              </div>
+              <button class="btn btn-secondary" style="font-size: 13px; padding: 8px 14px;">Đổi trọng tâm</button>
+            </div>
+
+            <!-- Choice 3: Reject / Recovery -->
+            <div class="concept-node-card" onclick="userDecision('reject')" style="border-left: 4px solid #DC2626;">
+              <div class="node-left">
+                <div class="node-icon-box" style="background: #FEE2E2; color: #991B1B;">❌</div>
+                <div class="node-title-group">
+                  <h4>Lựa chọn 3: Từ chối gợi ý của AI, tự học theo cách riêng</h4>
+                  <p>Thu hồi toàn bộ can thiệp của AI, đóng trợ lý và quay về màn hình bài học gốc.</p>
+                </div>
+              </div>
+              <button class="btn btn-ghost" style="color: #DC2626; font-size: 13px; padding: 8px 14px;">Từ chối &amp; Đóng</button>
+            </div>
+
+          </div>
+
+          <!-- Dynamic Feedback Container -->
+          <div id="decision-feedback" class="hidden" style="margin-top: 16px; padding: 14px 18px; border-radius: var(--radius-md); font-size: 14px;"></div>
+
+          <!-- Control Recovery Bar -->
+          <div class="control-bar" style="background: transparent; border-top: 1px solid var(--border-light); padding: 16px 0 0; margin-top: 20px;">
+            <button class="btn btn-secondary" onclick="goToStepA(1)">
+              ← Quay lại Màn 1 (Trước kích hoạt)
+            </button>
+            <a href="index.html" class="btn btn-ghost">🏠 Về Trang chủ</a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- Annotation Box for Observer -->
+    <div style="margin-top: 24px; padding: 14px 18px; background: #F1F5F9; border-radius: var(--radius-md); font-size: 12.5px; color: var(--text-muted); border: 1px dashed var(--border-strong);">
+      <b>Ghi chú tương tác Option A:</b> Đã tích hợp thành 2 màn hình trực quan: <i>Màn 1 (Trước khi kích hoạt)</i> → <i>Màn 2 (Tích hợp: Phần trên là Chẩn đoán của AI, Phần dưới là 3 Lựa chọn hành động của người dùng)</i>.
+    </div>
+
+  </main>
+
+  <script>
+    function goToStepA(step) {
+      document.getElementById('screen-a1').classList.add('hidden');
+      document.getElementById('screen-a2').classList.add('hidden');
+
+      const title = document.getElementById('stage-title');
+      const badge = document.getElementById('step-badge');
+
+      if (step === 1) {
+        document.getElementById('screen-a1').classList.remove('hidden');
+        title.innerText = 'Màn 1: Trạng thái TRƯỚC KHI KÍCH HOẠT';
+        badge.innerText = 'Bước 1 / 2';
+        badge.style.background = '#FEF3C7';
+        badge.style.color = '#92400E';
+      } else if (step === 2) {
+        document.getElementById('screen-a2').classList.remove('hidden');
+        title.innerText = 'Màn 2: AI Chẩn Đoán & Lựa Chọn Của Người Học';
+        badge.innerText = 'Bước 2 / 2';
+        badge.style.background = '#DCFCE7';
+        badge.style.color = '#166534';
+      }
+    }
+
+    function userDecision(type) {
+      const fb = document.getElementById('decision-feedback');
+      fb.classList.remove('hidden');
+
+      if (type === 'accept') {
+        fb.style.background = '#ECFDF5';
+        fb.style.border = '1px solid #A7F3D0';
+        fb.style.color = '#065F46';
+        fb.innerHTML = '🎉 <b>Bạn đã chọn Lựa chọn 1:</b> Tiếp thu chẩn đoán của AI. Hệ thống đưa bạn trở về Quiz để nộp lại câu trả lời đúng cho câu Chunk Overlap! <a href="index.html" class="btn btn-primary" style="margin-left: 10px; padding: 4px 10px; font-size: 12px; background:#059669;">Về bài học ngay</a>';
+      } else if (type === 'switch') {
+        fb.style.background = '#EEF2FF';
+        fb.style.border = '1px solid #C7D2FE';
+        fb.style.color = '#3730A3';
+        fb.innerHTML = '🔄 <b>Bạn đã chọn Lựa chọn 2:</b> AI cập nhật chẩn đoán sang câu Top-k: <i>k=1 khiến mô hình chỉ lấy được 1 đoạn trích duy nhất, rất dễ thiếu thông tin bổ trợ. Cần chọn k từ 3 đến 5 để có đủ dữ liệu tổng hợp.</i>';
+      } else {
+        fb.style.background = '#FEF2F2';
+        fb.style.border = '1px solid #FECACA';
+        fb.style.color = '#991B1B';
+        fb.innerHTML = '❌ <b>Bạn đã chọn Lựa chọn 3:</b> Toàn bộ chẩn đoán bị đóng lại. Bạn quay về tự học theo cách riêng qua Slide 8-10. <a href="index.html" class="btn btn-secondary" style="margin-left: 10px; padding: 4px 10px; font-size: 12px;">Đóng</a>';
+      }
+      
+      fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  </script>
+
+  <!-- Footer -->
+  <footer class="vlearn-footer">
+    <div>VLearn Prototype • Option A: Dẫn dắt tích hợp • Nguyễn Anh Dũng</div>
+  </footer>
+
+</body>
+</html>

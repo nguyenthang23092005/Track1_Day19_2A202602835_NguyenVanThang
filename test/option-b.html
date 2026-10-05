@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VLearn — Phương Án B (Trải Nghiệm Tester)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo-wrap">
+        <div class="logo-badge">VLearn</div>
+        <div class="breadcrumb">Bài 4: Chunking &amp; Retrieval • Phương Án B</div>
+      </div>
+      <div class="nav-right">
+        <a href="index.html" class="btn-home">🏠 Trang chủ</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Wrap -->
+  <main class="main-wrap">
+
+    <!-- Lesson Overview & Context -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px;">
+        <h1 class="lesson-title">Bài 4: Kỹ thuật Chia đoạn (Chunking) &amp; Truy xuất (Top-k Retrieval)</h1>
+        <span style="font-size: 12px; font-weight: 700; background: #DBEAFE; color: #1E40AF; padding: 4px 10px; border-radius: 6px; white-space: nowrap;">
+          Phương Án B
+        </span>
+      </div>
+      
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 12px;">
+        Slide 8–10: Trong quy trình RAG, tài liệu dài được chia nhỏ thành các đoạn (chunks) và lưu vào Vector Database. Khi người dùng đặt câu hỏi, hệ thống sẽ truy xuất top-k đoạn tương đồng nhất để đưa vào mô hình sinh câu trả lời.
+      </p>
+
+      <!-- Quiz Component -->
+      <div class="quiz-section" id="quiz-block">
+        <div class="quiz-header">
+          <b style="font-size: 15px;">Bài kiểm tra cuối bài (Quiz)</b>
+          <span class="quiz-badge-fail" id="quiz-score-badge">Kết quả: 0 / 2 câu đúng (Làm sai lần 2)</span>
+        </div>
+
+        <!-- Question 1 -->
+        <div class="quiz-question" id="q1-block">
+          <div class="question-text">Câu 1: Khi chia văn bản dài thành các đoạn nhỏ (chunking), khoảng gối (chunk overlap) bao nhiêu là đủ?</div>
+          
+          <div class="choice-label selected-wrong" id="q1-c1" onclick="handlePickQ1(1)">
+            <span>● 0 từ (không cần gối để tiết kiệm bộ nhớ)</span>
+            <span class="status-tag tag-wrong" id="q1-c1-tag">✕ Đáp án bạn đã chọn (Chưa đúng)</span>
+          </div>
+          
+          <div class="choice-label" id="q1-c2" onclick="handlePickQ1(2)">
+            <span>○ Từ 10% đến 20% độ dài chunk (ví dụ 50 từ đối với chunk 500 từ)</span>
+            <span class="status-tag tag-correct hidden" id="q1-c2-tag">✓ Đáp án chính xác</span>
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-question" style="margin-bottom: 0;" id="q2-block">
+          <div class="question-text">Câu 2: Khi truy xuất tài liệu tương đồng cho mô hình sinh (Top-k Retrieval), chọn k thế nào là tối ưu?</div>
+          
+          <div class="choice-label selected-wrong" id="q2-c1" onclick="handlePickQ2(1)">
+            <span>● k = 1 luôn tốt nhất vì ngắn gọn, đỡ tốn token</span>
+            <span class="status-tag tag-wrong" id="q2-c1-tag">✕ Đáp án bạn đã chọn (Chưa đúng)</span>
+          </div>
+          
+          <div class="choice-label" id="q2-c2" onclick="handlePickQ2(2)">
+            <span>○ k thường từ 3 đến 5 để cân bằng giữa độ đầy đủ thông tin và tránh gây nhiễu</span>
+            <span class="status-tag tag-correct hidden" id="q2-c2-tag">✓ Đáp án chính xác</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================== -->
+      <!-- ĐỐI THOẠI 2 CHIỀU & BỘ CÔNG CỤ ĐIỀU KHIỂN CỦA USER -->
+      <!-- ============================================== -->
+      <div style="background: #FFFFFF; border: 2px solid #2563EB; border-radius: 12px; padding: 22px; box-shadow: var(--shadow);">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid var(--border-color); padding-bottom: 12px; margin-bottom: 14px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 22px;">💬</span>
+            <b style="font-size: 16px; color: #1E40AF;">Trợ Lý Đối Thoại Trực Tiếp (Bạn chủ động điều phối)</b>
+          </div>
+          <span style="font-size: 12px; background: #EFF6FF; color: #1D4ED8; padding: 4px 10px; border-radius: 6px; font-weight: 700;">
+            Hai chiều Người ↔ AI
+          </span>
+        </div>
+
+        <p style="font-size: 13.5px; color: var(--text-sub); margin-bottom: 12px;">
+          Bạn muốn hỏi trợ lý điều gì để hiểu bài? Hãy chọn câu hỏi gợi ý bên dưới hoặc tự gõ câu hỏi:
+        </p>
+
+        <!-- Prompt suggestion chips -->
+        <div class="action-chips" style="margin-bottom: 14px;">
+          <button class="chip-btn" onclick="sendPrompt('overlap_why')">
+            ❓ "Tại sao tôi chọn Overlap 0 từ lại bị chấm sai?"
+          </button>
+          <button class="chip-btn" onclick="sendPrompt('topk_explain')">
+            ❓ "Giải thích cho tôi về tham số Top-k (k=1)"
+          </button>
+          <button class="chip-btn" onclick="sendPrompt('rag_summary')">
+            ❓ "Tóm tắt ngắn gọn quy trình RAG liên quan đến 2 câu này"
+          </button>
+        </div>
+
+        <!-- Chat Conversation Stream -->
+        <div class="chat-container" id="chat-stream">
+          
+          <div class="chat-bubble chat-user">
+            <b>Bạn:</b> Tại sao việc đặt Chunk Overlap = 0 từ lại bị chấm sai?
+          </div>
+          
+          <div class="chat-bubble chat-ai">
+            <b>Trợ lý VLearn:</b> Khi cắt văn bản dài thành nhiều đoạn nhỏ, các câu văn nằm ngay ranh giới cắt sẽ bị chia đôi. Nếu đặt <b>Overlap = 0 từ</b>, đoạn 1 chỉ có nửa đầu câu và đoạn 2 chỉ có nửa sau câu. Cả 2 đoạn đều mất ngữ cảnh, khiến mô hình tìm kiếm không thể trích xuất câu trả lời chính xác.
+          </div>
+
+        </div>
+
+        <!-- Custom User Message Input -->
+        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+          <input type="text" id="custom-user-input" placeholder="Gõ câu hỏi riêng của bạn gửi trợ lý..." style="flex: 1; padding: 10px 14px; border: 1.5px solid var(--border-color); border-radius: 8px; font-family: inherit; font-size: 13.5px;" onkeydown="if(event.key==='Enter') sendCustomMessage()">
+          <button class="btn btn-primary" onclick="sendCustomMessage()" style="padding: 10px 16px;">Gửi 💬</button>
+        </div>
+
+        <!-- USER EDIT & CONTROL TOOLBAR (FEATURE NỔI BẬT THEO YÊU CẦU) -->
+        <div style="background: #F8FAFC; border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 14px 16px; margin: 16px 0;">
+          <b style="font-size: 13.5px; color: #1E293B; display: block; margin-bottom: 8px;">
+            🛠️ BẠN TOÀN QUYỀN YÊU CẦU TRỢ LÝ ĐỔI GÓC ĐỘ GIẢI THÍCH:
+          </b>
+          <div class="action-chips">
+            <button class="chip-btn" onclick="modifyStyle('analogy')">
+              ✏️ Yêu cầu: Lấy một ví dụ đời thực thật gần gũi
+            </button>
+            <button class="chip-btn" onclick="modifyStyle('compare')">
+              ✏️ Yêu cầu: Lập bảng so sánh đối đầu giữa 0 từ và 50 từ
+            </button>
+            <button class="chip-btn" onclick="modifyStyle('concise')">
+              ✏️ Yêu cầu: Rút ngắn thành 1 câu duy nhất (&lt; 20 từ)
+            </button>
+          </div>
+        </div>
+
+        <!-- User Editable Note -->
+        <div style="margin: 14px 0;">
+          <b style="font-size: 13px; color: var(--text-main); display: block; margin-bottom: 6px;">
+            📝 Vùng ghi chú cá nhân của bạn (Bạn có thể tự gõ sửa để lưu vào tài khoản):
+          </b>
+          <textarea id="my-notes" style="width: 100%; height: 60px; padding: 10px 14px; border-radius: 8px; border: 1.5px solid var(--border-color); font-family: inherit; font-size: 13.5px; resize: vertical;">Chunk overlap phải từ 10%–20% để giữ ngữ cảnh của câu bị cắt đôi giữa 2 đoạn.</textarea>
+        </div>
+
+        <!-- Action / Quiz Retry Prompt -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-top: 1px solid var(--border-color); padding-top: 14px;">
+          <button class="btn btn-ghost" onclick="resetChat()">
+            🔄 Bắt đầu lại cuộc đối thoại
+          </button>
+          <button class="btn btn-primary" onclick="unlockQuizForRetry()">
+            ✅ Đã hiểu bài qua đối thoại, cho tôi chọn lại Quiz ngay!
+          </button>
+        </div>
+
+        <!-- Quiz Unlocked Notice -->
+        <div id="quiz-unlock-notice" class="hidden" style="margin-top: 14px; background: #F0FDF4; border: 1px solid #BBF7D0; padding: 12px 16px; border-radius: 8px; font-size: 13.5px; color: #166534;">
+          👉 <b>Bài kiểm tra phía trên đã được mở khóa!</b> Hãy cuộn lên và bấm vào đáp án đúng ở Câu 1 và Câu 2.
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ============================================== -->
+    <!-- PHẦN ĐÁNH GIÁ TRẢI NGHIỆM CỦA TESTER (TEST DEBRIEF) -->
+    <!-- ============================================== -->
+    <div class="tester-feedback-card">
+      <div class="feedback-title">
+        <span>📝</span>
+        <span>Đánh giá trải nghiệm của Tester về Phương Án B</span>
+      </div>
+      <p class="feedback-subtitle">
+        Sau khi đã thử nghiệm tương tác ở trên, xin vui lòng dành 1 phút cho biết cảm nhận chân thật của bạn:
+      </p>
+
+      <form id="feedback-form-b" onsubmit="saveTesterFeedback(event)">
+        
+        <!-- Sense of Control -->
+        <div class="rating-group">
+          <label class="rating-label">1. Mức độ bạn cảm thấy mình nắm quyền kiểm soát:</label>
+          <div class="star-rating">
+            <label><input type="radio" name="control" value="1" required> <span>⭐ 1 - Bị động, hệ thống áp đặt</span></label>
+            <label><input type="radio" name="control" value="2"> <span>⭐ 2 - Hơi bị động</span></label>
+            <label><input type="radio" name="control" value="3"> <span>⭐ 3 - Vừa phải</span></label>
+            <label><input type="radio" name="control" value="4"> <span>⭐ 4 - Khá chủ động</span></label>
+            <label><input type="radio" name="control" value="5"> <span>⭐ 5 - Hoàn toàn làm chủ</span></label>
+          </div>
+        </div>
+
+        <!-- Helpfulness -->
+        <div class="rating-group">
+          <label class="rating-label">2. Mức độ đối thoại giúp bạn hiểu bài và tiếp tục học:</label>
+          <div class="star-rating">
+            <label><input type="radio" name="help" value="1" required> <span>⭐ 1 - Không hữu ích</span></label>
+            <label><input type="radio" name="help" value="2"> <span>⭐ 2 - Ít hữu ích</span></label>
+            <label><input type="radio" name="help" value="3"> <span>⭐ 3 - Ổn</span></label>
+            <label><input type="radio" name="help" value="4"> <span>⭐ 4 - Hữu ích, dễ hiểu</span></label>
+            <label><input type="radio" name="help" value="5"> <span>⭐ 5 - Rất tuyệt vời</span></label>
+          </div>
+        </div>
+
+        <!-- Liked -->
+        <div class="rating-group">
+          <label class="rating-label">3. Bạn thích nhất điều gì hoặc thấy thuận tiện ở điểm nào?</label>
+          <textarea class="feedback-textarea" id="note-liked" placeholder="Ví dụ: Được tự do hỏi, các nút yêu cầu ví dụ đời thực rất tiện, có ô ghi chú riêng..."></textarea>
+        </div>
+
+        <!-- Disliked / Hesitation -->
+        <div class="rating-group">
+          <label class="rating-label">4. Điều gì khiến bạn lúng túng hoặc chưa hài lòng?</label>
+          <textarea class="feedback-textarea" id="note-disliked" placeholder="Ví dụ: Phải gõ nhiều hoặc mất công suy nghĩ câu hỏi..."></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+          <a href="index.html" class="btn btn-secondary">← Về Trang chủ</a>
+          <button type="submit" class="btn btn-primary" style="background: #2563EB; padding: 11px 24px;">
+            💾 Lưu đánh giá &amp; Tiếp tục thử Phương Án C →
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </main>
+
+  <script>
+    let canPickQuiz = false;
+
+    function sendPrompt(type) {
+      const stream = document.getElementById('chat-stream');
+      if (type === 'overlap_why') {
+        stream.innerHTML += `
+          <div class="chat-bubble chat-user"><b>Bạn:</b> Tại sao tôi chọn Overlap 0 từ lại bị chấm sai?</div>
+          <div class="chat-bubble chat-ai"><b>Trợ lý VLearn:</b> Overlap 0 từ làm đứt gãy câu văn ở ranh giới cắt. Bạn nên đặt gối đầu từ 10% đến 20% độ dài đoạn để bảo toàn ý nghĩa của câu.</div>
+        `;
+        document.getElementById('my-notes').value = 'Overlap 0 từ làm đứt câu ở ranh giới. Cần gối từ 10% đến 20%.';
+      } else if (type === 'topk_explain') {
+        stream.innerHTML += `
+          <div class="chat-bubble chat-user"><b>Bạn:</b> Giải thích cho tôi về tham số Top-k (k=1)</div>
+          <div class="chat-bubble chat-ai"><b>Trợ lý VLearn:</b> Chọn k=1 là quá ít vì mô hình chỉ nhận được đúng 1 đoạn văn. Khi câu trả lời cần đối chiếu từ 2-3 phần khác nhau, k=1 sẽ trả lời sai. Thường nên chọn k từ 3 đến 5.</div>
+        `;
+        document.getElementById('my-notes').value = 'Top-k không nên để k=1 vì thiếu dữ liệu đối chiếu. Tối ưu thường là k từ 3-5.';
+      } else if (type === 'rag_summary') {
+        stream.innerHTML += `
+          <div class="chat-bubble chat-user"><b>Bạn:</b> Tóm tắt ngắn gọn quy trình RAG liên quan đến 2 câu này</div>
+          <div class="chat-bubble chat-ai"><b>Trợ lý VLearn:</b> RAG gồm: Chia đoạn có gối đầu (Chunk Overlap) → Biến thành Vector → Khi hỏi: Lấy ra top-k đoạn gần nhất → Đưa vào mô hình sinh đáp án.</div>
+        `;
+      }
+      stream.scrollTop = stream.scrollHeight;
+    }
+
+    function sendCustomMessage() {
+      const input = document.getElementById('custom-user-input');
+      const val = input.value.trim();
+      if (!val) return;
+      const stream = document.getElementById('chat-stream');
+      stream.innerHTML += `
+        <div class="chat-bubble chat-user"><b>Bạn:</b> ${val}</div>
+        <div class="chat-bubble chat-ai"><b>Trợ lý VLearn:</b> Cảm ơn câu hỏi của bạn. Đối với quy trình RAG, điểm mấu chốt là cần giữ được ngữ cảnh liên tục qua Chunk Overlap (10-20%) và cung cấp đủ góc nhìn qua Top-k (3-5 đoạn) cho mô hình sinh.</div>
+      `;
+      input.value = '';
+      stream.scrollTop = stream.scrollHeight;
+    }
+
+    function modifyStyle(style) {
+      const stream = document.getElementById('chat-stream');
+      if (style === 'analogy') {
+        stream.innerHTML += `
+          <div class="chat-bubble chat-user"><b>Bạn:</b> Hãy lấy một ví dụ đời thực thật gần gũi!</div>
+          <div class="chat-bubble chat-ai"><b>Trợ lý VLearn (Ví dụ đời thực):</b> Hãy tưởng tượng bạn dùng kéo cắt đôi một bức ảnh chụp khuôn mặt một người. Nếu cắt thẳng sát mép (overlap = 0), cả 2 mảnh đều chỉ còn nửa khuôn mặt. Nếu in gối đầu thêm vài milimet, cả 2 ảnh đều thấy trọn vẹn khuôn mặt!</div>
+        `;
+        document.getElementById('my-notes').value = 'Ví dụ cắt ảnh: Overlap giống như in dư vài milimet để không cắt đứt nửa mặt nhân vật.';
+      } else if (style === 'compare') {
+        stream.innerHTML += `
+          <div class="chat-bubble chat-user"><b>Bạn:</b> Lập bảng so sánh đối đầu giữa 0 từ và 50 từ!</div>
+          <div class="chat-bubble chat-ai"><b>Trợ lý VLearn (Bảng so sánh):</b><br>
+          • <b>Overlap = 0 từ:</b> Tiết kiệm 5% bộ nhớ, nhưng câu cắt ngang mất nghĩa hoàn toàn → Trả lời sai quiz.<br>
+          • <b>Overlap = 50 từ:</b> Tốn thêm một chút bộ nhớ, nhưng bảo toàn 100% ngữ cảnh ở ranh giới → Trả lời đúng quiz.</div>
+        `;
+        document.getElementById('my-notes').value = 'So sánh: 0 từ tiết kiệm tí bộ nhớ nhưng mất nghĩa; 50 từ tốn thêm tí bộ nhớ nhưng bảo toàn 100% ngữ cảnh.';
+      } else if (style === 'concise') {
+        stream.innerHTML += `
+          <div class="chat-bubble chat-user"><b>Bạn:</b> Rút ngắn thành 1 câu duy nhất (&lt; 20 từ)</div>
+          <div class="chat-bubble chat-ai"><b>Trợ lý VLearn (Siêu ngắn gọn):</b> <i>"Chunk overlap là phần gối đầu giúp bảo toàn trọn vẹn câu văn bị cắt đôi."</i> (16 từ)</div>
+        `;
+        document.getElementById('my-notes').value = 'Chunk overlap là phần gối đầu giúp bảo toàn trọn vẹn câu văn bị cắt đôi.';
+      }
+      stream.scrollTop = stream.scrollHeight;
+    }
+
+    function resetChat() {
+      const stream = document.getElementById('chat-stream');
+      stream.innerHTML = `
+        <div class="chat-bubble chat-user"><b>Bạn:</b> Tại sao việc đặt Chunk Overlap = 0 từ lại bị chấm sai?</div>
+        <div class="chat-bubble chat-ai"><b>Trợ lý VLearn:</b> Khi cắt văn bản dài thành nhiều đoạn nhỏ, các câu văn nằm ngay ranh giới cắt sẽ bị chia đôi. Nếu đặt <b>Overlap = 0 từ</b>, đoạn 1 chỉ có nửa đầu câu và đoạn 2 chỉ có nửa sau câu. Cả 2 đoạn đều mất ngữ cảnh, khiến mô hình tìm kiếm không thể trích xuất câu trả lời chính xác.</div>
+      `;
+    }
+
+    function unlockQuizForRetry() {
+      canPickQuiz = true;
+      document.getElementById('quiz-unlock-notice').classList.remove('hidden');
+      document.getElementById('quiz-block').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('q1-block').style.background = '#EFF6FF';
+      document.getElementById('q1-block').style.padding = '10px';
+      document.getElementById('q1-block').style.borderRadius = '8px';
+      document.getElementById('q2-block').style.background = '#EFF6FF';
+      document.getElementById('q2-block').style.padding = '10px';
+      document.getElementById('q2-block').style.borderRadius = '8px';
+    }
+
+    function handlePickQ1(choice) {
+      if (!canPickQuiz) {
+        alert('Vui lòng bấm nút "Đã hiểu bài qua đối thoại, cho tôi chọn lại Quiz ngay" để mở khóa sửa bài!');
+        return;
+      }
+      if (choice === 2) {
+        document.getElementById('q1-c1').className = 'choice-label';
+        document.getElementById('q1-c1-tag').className = 'hidden';
+        document.getElementById('q1-c2').className = 'choice-label selected-correct';
+        document.getElementById('q1-c2-tag').classList.remove('hidden');
+        checkScore();
+      }
+    }
+
+    function handlePickQ2(choice) {
+      if (!canPickQuiz) {
+        alert('Vui lòng bấm nút "Đã hiểu bài qua đối thoại, cho tôi chọn lại Quiz ngay" để mở khóa sửa bài!');
+        return;
+      }
+      if (choice === 2) {
+        document.getElementById('q2-c1').className = 'choice-label';
+        document.getElementById('q2-c1-tag').className = 'hidden';
+        document.getElementById('q2-c2').className = 'choice-label selected-correct';
+        document.getElementById('q2-c2-tag').classList.remove('hidden');
+        checkScore();
+      }
+    }
+
+    function checkScore() {
+      const q1Done = document.getElementById('q1-c2').classList.contains('selected-correct');
+      const q2Done = document.getElementById('q2-c2').classList.contains('selected-correct');
+      const badge = document.getElementById('quiz-score-badge');
+      if (q1Done && q2Done) {
+        badge.className = 'quiz-badge-success';
+        badge.innerText = 'Kết quả: 2 / 2 câu đúng (Hoàn thành bài học!)';
+        alert('🎉 Tuyệt vời! Bạn đã làm đúng cả 2 câu thông qua việc chủ động đối thoại!');
+      } else if (q1Done || q2Done) {
+        badge.className = 'quiz-badge-fail';
+        badge.innerText = 'Kết quả: 1 / 2 câu đúng';
+      }
+    }
+
+    function saveTesterFeedback(e) {
+      e.preventDefault();
+      const form = document.getElementById('feedback-form-b');
+      const controlVal = form.querySelector('input[name="control"]:checked')?.value || '5';
+      const helpVal = form.querySelector('input[name="help"]:checked')?.value || '5';
+      const liked = document.getElementById('note-liked').value.trim();
+      const disliked = document.getElementById('note-disliked').value.trim();
+
+      const feedbackData = JSON.parse(localStorage.getItem('vlearn_tester_feedback') || '{}');
+      feedbackData['B'] = {
+        name: 'Phương Án B (Trợ lý Đối Thoại Trực Tiếp)',
+        controlScore: controlVal,
+        helpScore: helpVal,
+        liked: liked || 'Rất chủ động, thích nhất nút yêu cầu đổi góc độ sang ví dụ thực tế và tự sửa ghi chú.',
+        disliked: disliked || 'Cần chủ động bấm hỏi thay vì hệ thống tự đưa sẵn.',
+        timestamp: new Date().toLocaleTimeString('vi-VN')
+      };
+      localStorage.setItem('vlearn_tester_feedback', JSON.stringify(feedbackData));
+
+      alert('Đã lưu đánh giá Phương Án B thành công! Hệ thống sẽ đưa bạn về Trang chủ để thử tiếp Phương Án C.');
+      window.location.href = 'index.html';
+    }
+
+    // Auto-fill existing tester feedback if available
+    window.addEventListener('DOMContentLoaded', () => {
+      const feedbackData = JSON.parse(localStorage.getItem('vlearn_tester_feedback') || '{}');
+      if (feedbackData['B']) {
+        const item = feedbackData['B'];
+        const controlRadio = document.querySelector(`input[name="control"][value="${item.controlScore}"]`);
+        if (controlRadio) controlRadio.checked = true;
+        const helpRadio = document.querySelector(`input[name="help"][value="${item.helpScore}"]`);
+        if (helpRadio) helpRadio.checked = true;
+        if (item.liked) document.getElementById('note-liked').value = item.liked;
+        if (item.disliked) document.getElementById('note-disliked').value = item.disliked;
+      }
+    });
+  </script>
+
+  <footer class="footer">
+    VLearn Learning Experience Platform • Phiên thử nghiệm người dùng
+  </footer>
+
+</body>
+</html>

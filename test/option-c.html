@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VLearn — Phương Án C (Trải Nghiệm Tester)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo-wrap">
+        <div class="logo-badge">VLearn</div>
+        <div class="breadcrumb">Bài 4: Chunking &amp; Retrieval • Phương Án C</div>
+      </div>
+      <div class="nav-right">
+        <a href="index.html" class="btn-home">🏠 Trang chủ</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Wrap -->
+  <main class="main-wrap">
+
+    <!-- Lesson Overview & Context -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px;">
+        <h1 class="lesson-title">Bài 4: Kỹ thuật Chia đoạn (Chunking) &amp; Truy xuất (Top-k Retrieval)</h1>
+        <span style="font-size: 12px; font-weight: 700; background: #DCFCE7; color: #166534; padding: 4px 10px; border-radius: 6px; white-space: nowrap;">
+          Phương Án C
+        </span>
+      </div>
+      
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 12px;">
+        Slide 8–10: Trong quy trình RAG, tài liệu dài được chia nhỏ thành các đoạn (chunks) và lưu vào Vector Database. Khi người dùng đặt câu hỏi, hệ thống sẽ truy xuất top-k đoạn tương đồng nhất để đưa vào mô hình sinh câu trả lời.
+      </p>
+
+      <!-- Quiz Component -->
+      <div class="quiz-section" id="quiz-block">
+        <div class="quiz-header">
+          <b style="font-size: 15px;">Bài kiểm tra cuối bài (Quiz)</b>
+          <span class="quiz-badge-fail" id="quiz-score-badge">Kết quả: 0 / 2 câu đúng (Làm sai lần 2)</span>
+        </div>
+
+        <!-- Question 1 -->
+        <div class="quiz-question" id="q1-block">
+          <div class="question-text">Câu 1: Khi chia văn bản dài thành các đoạn nhỏ (chunking), khoảng gối (chunk overlap) bao nhiêu là đủ?</div>
+          
+          <div class="choice-label selected-wrong" id="q1-c1">
+            <span>● 0 từ (không cần gối để tiết kiệm bộ nhớ)</span>
+            <span class="status-tag tag-wrong" id="q1-c1-tag">✕ Đáp án bạn đã chọn (Chưa đúng)</span>
+          </div>
+          
+          <div class="choice-label" id="q1-c2">
+            <span>○ Từ 10% đến 20% độ dài chunk (ví dụ 50 từ đối với chunk 500 từ)</span>
+            <span class="status-tag tag-correct hidden" id="q1-c2-tag">✓ Đáp án chính xác</span>
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-question" style="margin-bottom: 0;" id="q2-block">
+          <div class="question-text">Câu 2: Khi truy xuất tài liệu tương đồng cho mô hình sinh (Top-k Retrieval), chọn k thế nào là tối ưu?</div>
+          
+          <div class="choice-label selected-wrong" id="q2-c1">
+            <span>● k = 1 luôn tốt nhất vì ngắn gọn, đỡ tốn token</span>
+            <span class="status-tag tag-wrong" id="q2-c1-tag">✕ Đáp án bạn đã chọn (Chưa đúng)</span>
+          </div>
+          
+          <div class="choice-label" id="q2-c2">
+            <span>○ k thường từ 3 đến 5 để cân bằng giữa độ đầy đủ thông tin và tránh gây nhiễu</span>
+            <span class="status-tag tag-correct hidden" id="q2-c2-tag">✓ Đáp án chính xác</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================== -->
+      <!-- HỆ THỐNG TỰ ĐỘNG CHẠY NGẦM & 2 ĐIỂM CAN THIỆP -->
+      <!-- ============================================== -->
+      
+      <!-- System Notification Box -->
+      <div id="approval-box" class="alert-box alert-green" style="border-width: 2px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+          <span style="font-size: 22px;">⚡</span>
+          <b style="font-size: 16px; color: #166534;">Hệ thống đã tự động tạo Gói ôn tập bổ túc cho bạn</b>
+        </div>
+        
+        <p style="font-size: 14px; color: #14532D; line-height: 1.6; margin-bottom: 14px;">
+          Dựa trên nhật ký nộp bài sai lần 2 và lịch sử xem video/slide, hệ thống đã tự động phân tích và tạo sẵn nội dung bổ túc 60 giây dưới đây:
+        </p>
+
+        <!-- Drafted Solution Content -->
+        <div style="background: #FFFFFF; border: 1.5px solid #86EFAC; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+          <b style="font-size: 14.5px; color: #166534; display: block; margin-bottom: 6px;">
+            Trọng tâm bổ túc: Kỹ thuật Chunk Overlap (Khoảng gối 10% - 20%)
+          </b>
+          <p style="font-size: 13.5px; color: #334155; line-height: 1.5; margin-bottom: 8px;">
+            Hệ thống phát hiện bạn chọn <i>Overlap = 0 từ</i>. Sai sót này làm các câu văn ở vị trí cắt bị ngắt cụt, khiến mô hình tìm kiếm ngữ nghĩa thất bại. Cần gối đầu từ 10% đến 20% để giữ nguyên vẹn câu văn.
+          </p>
+          <div style="font-size: 12.5px; color: #64748B; background: #F8FAFC; padding: 8px 12px; border-radius: 6px;">
+            ⏱️ Đề xuất tự động: Tự động cập nhật đáp án đúng và mở khóa bài tập tương đương tiếp theo.
+          </div>
+        </div>
+
+        <!-- 2 Human Control Points: Approval vs Exception -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-top: 1px dashed #86EFAC; padding-top: 14px;">
+          
+          <button class="btn btn-primary" onclick="approvePlan()" style="background: #16A34A; font-weight: 700; padding: 11px 20px;">
+            ✅ Phê duyệt &amp; Áp dụng làm lại Quiz ngay
+          </button>
+
+          <button class="btn btn-secondary" onclick="openException()" style="color: #991B1B; border-color: #FECACA; background: #FFF5F5; padding: 11px 18px;">
+            ⚠️ Báo hệ thống hiểu sai / Can thiệp ngoại lệ
+          </button>
+
+        </div>
+      </div>
+
+      <!-- Exception Intervention Panel (Hidden until user clicks exception) -->
+      <div id="exception-box" class="alert-box alert-red hidden" style="border-width: 2px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+          <span style="font-size: 22px;">🛑</span>
+          <b style="font-size: 16px; color: #991B1B;">BẢNG CAN THIỆP NGOẠI LỆ (HUMAN OVERRIDE)</b>
+        </div>
+        
+        <p style="font-size: 14px; color: #7F1D1D; margin-bottom: 14px;">
+          Bạn vừa chặn tính năng tự động của hệ thống. Vui lòng cho biết lý do bạn can thiệp:
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+          <label style="background:#fff; border:1.5px solid #FECACA; padding:11px 14px; border-radius:8px; font-size:13.5px; cursor:pointer; display:flex; align-items:center; gap:8px;">
+            <input type="radio" name="reason" value="misclick" checked>
+            <span><b>Lý do 1:</b> Tôi hiểu bài nhưng bấm nhầm đáp án do đọc lướt nhanh.</span>
+          </label>
+          <label style="background:#fff; border:1.5px solid #FECACA; padding:11px 14px; border-radius:8px; font-size:13.5px; cursor:pointer; display:flex; align-items:center; gap:8px;">
+            <input type="radio" name="reason" value="wrong_focus">
+            <span><b>Lý do 2:</b> Hệ thống chẩn đoán lệch trọng tâm, tôi muốn tự học lại theo Slide.</span>
+          </label>
+          <label style="background:#fff; border:1.5px solid #FECACA; padding:11px 14px; border-radius:8px; font-size:13.5px; cursor:pointer; display:flex; align-items:center; gap:8px;">
+            <input type="radio" name="reason" value="disable_auto">
+            <span><b>Lý do 3:</b> Tắt toàn bộ tính năng tự động can thiệp này, tôi muốn tự kiểm soát 100%.</span>
+          </label>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <button class="btn btn-secondary" onclick="closeException()">
+            ← Quay lại xem gợi ý
+          </button>
+          <button class="btn btn-danger" onclick="confirmException()" style="font-weight: 700;">
+            Xác nhận hủy tự động hóa &amp; Tự làm tiếp
+          </button>
+        </div>
+      </div>
+
+      <!-- Action Result Feedback -->
+      <div id="result-feedback" class="hidden" style="margin-top: 16px; padding: 14px 18px; border-radius: 8px; font-size: 14px;"></div>
+
+    </div>
+
+    <!-- ============================================== -->
+    <!-- PHẦN ĐÁNH GIÁ TRẢI NGHIỆM CỦA TESTER (TEST DEBRIEF) -->
+    <!-- ============================================== -->
+    <div class="tester-feedback-card">
+      <div class="feedback-title">
+        <span>📝</span>
+        <span>Đánh giá trải nghiệm của Tester về Phương Án C</span>
+      </div>
+      <p class="feedback-subtitle">
+        Sau khi đã thử nghiệm tương tác ở trên, xin vui lòng dành 1 phút cho biết cảm nhận chân thật của bạn:
+      </p>
+
+      <form id="feedback-form-c" onsubmit="saveTesterFeedback(event)">
+        
+        <!-- Sense of Control -->
+        <div class="rating-group">
+          <label class="rating-label">1. Mức độ bạn cảm thấy mình nắm quyền kiểm soát:</label>
+          <div class="star-rating">
+            <label><input type="radio" name="control" value="1" required> <span>⭐ 1 - Bị động, hệ thống áp đặt</span></label>
+            <label><input type="radio" name="control" value="2"> <span>⭐ 2 - Hơi bị động</span></label>
+            <label><input type="radio" name="control" value="3"> <span>⭐ 3 - Vừa phải</span></label>
+            <label><input type="radio" name="control" value="4"> <span>⭐ 4 - Khá chủ động</span></label>
+            <label><input type="radio" name="control" value="5"> <span>⭐ 5 - Hoàn toàn làm chủ</span></label>
+          </div>
+        </div>
+
+        <!-- Helpfulness -->
+        <div class="rating-group">
+          <label class="rating-label">2. Mức độ tự động hóa giúp bạn nhanh chóng vượt qua bài học:</label>
+          <div class="star-rating">
+            <label><input type="radio" name="help" value="1" required> <span>⭐ 1 - Không hữu ích</span></label>
+            <label><input type="radio" name="help" value="2"> <span>⭐ 2 - Ít hữu ích</span></label>
+            <label><input type="radio" name="help" value="3"> <span>⭐ 3 - Ổn</span></label>
+            <label><input type="radio" name="help" value="4"> <span>⭐ 4 - Rất nhanh và tiện</span></label>
+            <label><input type="radio" name="help" value="5"> <span>⭐ 5 - Rất tuyệt vời</span></label>
+          </div>
+        </div>
+
+        <!-- Liked -->
+        <div class="rating-group">
+          <label class="rating-label">3. Bạn thích nhất điều gì hoặc thấy thuận tiện ở điểm nào?</label>
+          <textarea class="feedback-textarea" id="note-liked" placeholder="Ví dụ: Rất nhanh gọn, không cần gõ chat, có nút báo ngoại lệ nếu hệ thống đoán sai..."></textarea>
+        </div>
+
+        <!-- Disliked / Hesitation -->
+        <div class="rating-group">
+          <label class="rating-label">4. Điều gì khiến bạn lo ngại hoặc chưa hài lòng?</label>
+          <textarea class="feedback-textarea" id="note-disliked" placeholder="Ví dụ: Cảm giác hơi bị dọn sẵn, nếu bấm duyệt vội có thể không thực sự hiểu sâu..."></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+          <a href="index.html" class="btn btn-secondary">← Về Trang chủ</a>
+          <button type="submit" class="btn btn-primary" style="background: #16A34A; padding: 11px 24px;">
+            💾 Lưu đánh giá &amp; Xem Bảng Tổng Hợp Kết Quả →
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </main>
+
+  <script>
+    function approvePlan() {
+      const fb = document.getElementById('result-feedback');
+      fb.classList.remove('hidden');
+      fb.style.background = '#F0FDF4';
+      fb.style.border = '1px solid #BBF7D0';
+      fb.style.color = '#166534';
+      fb.innerHTML = '🎉 <b>Đã phê duyệt thành công!</b> Gói hỗ trợ ôn tập đã được áp dụng. Đáp án câu 1 đã được cập nhật chính xác (10% - 20%).';
+
+      // Update quiz visually
+      document.getElementById('q1-c1').className = 'choice-label';
+      document.getElementById('q1-c1-tag').className = 'hidden';
+      document.getElementById('q1-c2').className = 'choice-label selected-correct';
+      document.getElementById('q1-c2-tag').classList.remove('hidden');
+      
+      document.getElementById('quiz-score-badge').className = 'quiz-badge-fail';
+      document.getElementById('quiz-score-badge').innerText = 'Kết quả: 1 / 2 câu đúng (Đã cập nhật)';
+      document.getElementById('approval-box').style.opacity = '0.7';
+    }
+
+    function openException() {
+      document.getElementById('approval-box').classList.add('hidden');
+      document.getElementById('exception-box').classList.remove('hidden');
+    }
+
+    function closeException() {
+      document.getElementById('exception-box').classList.add('hidden');
+      document.getElementById('approval-box').classList.remove('hidden');
+    }
+
+    function confirmException() {
+      const selectedReason = document.querySelector('input[name="reason"]:checked').value;
+      const fb = document.getElementById('result-feedback');
+      fb.classList.remove('hidden');
+      fb.style.background = '#FEF2F2';
+      fb.style.border = '1px solid #FECACA';
+      fb.style.color = '#991B1B';
+      fb.innerHTML = '🛑 <b>Đã xử lý ngoại lệ thành công:</b> Hệ thống đã thu hồi tính năng tự động. Toàn bộ quyền kiểm soát thuộc về bạn. Bạn có thể mở lại slide 8–10 để tự học.';
+      document.getElementById('exception-box').classList.add('hidden');
+    }
+
+    function saveTesterFeedback(e) {
+      e.preventDefault();
+      const form = document.getElementById('feedback-form-c');
+      const controlVal = form.querySelector('input[name="control"]:checked')?.value || '3';
+      const helpVal = form.querySelector('input[name="help"]:checked')?.value || '4';
+      const liked = document.getElementById('note-liked').value.trim();
+      const disliked = document.getElementById('note-disliked').value.trim();
+
+      const feedbackData = JSON.parse(localStorage.getItem('vlearn_tester_feedback') || '{}');
+      feedbackData['C'] = {
+        name: 'Phương Án C (Hệ Thống Tự Động Soạn Bài Ôn)',
+        controlScore: controlVal,
+        helpScore: helpVal,
+        liked: liked || 'Rất nhanh và rảnh tay, thích việc có nút báo ngoại lệ nếu hệ thống đoán sai.',
+        disliked: disliked || 'Hơi bị động nếu người học lười đọc kỹ mà chỉ bấm nút duyệt.',
+        timestamp: new Date().toLocaleTimeString('vi-VN')
+      };
+      localStorage.setItem('vlearn_tester_feedback', JSON.stringify(feedbackData));
+
+      alert('Đã lưu đánh giá Phương Án C thành công! Hệ thống sẽ đưa bạn về Trang chủ để xem Bảng Tổng Hợp Kết Quả.');
+      window.location.href = 'index.html';
+    }
+
+    // Auto-fill existing tester feedback if available
+    window.addEventListener('DOMContentLoaded', () => {
+      const feedbackData = JSON.parse(localStorage.getItem('vlearn_tester_feedback') || '{}');
+      if (feedbackData['C']) {
+        const item = feedbackData['C'];
+        const controlRadio = document.querySelector(`input[name="control"][value="${item.controlScore}"]`);
+        if (controlRadio) controlRadio.checked = true;
+        const helpRadio = document.querySelector(`input[name="help"][value="${item.helpScore}"]`);
+        if (helpRadio) helpRadio.checked = true;
+        if (item.liked) document.getElementById('note-liked').value = item.liked;
+        if (item.disliked) document.getElementById('note-disliked').value = item.disliked;
+      }
+    });
+  </script>
+
+  <footer class="footer">
+    VLearn Learning Experience Platform • Phiên thử nghiệm người dùng
+  </footer>
+
+</body>
+</html>

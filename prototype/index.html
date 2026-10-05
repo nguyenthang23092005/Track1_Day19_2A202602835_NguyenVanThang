@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VLearn — Màn 0: Bài học RAG & Điểm xuất phát A/B/C</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="vlearn-header">
+    <div class="vlearn-nav-inner">
+      <div class="brand-wrapper">
+        <div class="brand-badge">VLearn</div>
+        <div class="course-crumb">
+          <span>AI Engineering</span>
+          <span class="crumb-sep">/</span>
+          <span>Module 3: RAG Pipeline</span>
+          <span class="crumb-sep">/</span>
+          <span class="crumb-active">Bài 4: Chunking & Retrieval</span>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <span class="lab-tag">🧪 Test-Ready A/B/C</span>
+        <a href="index.html" class="btn-reset-nav" title="Quay về Trang chủ">🏠 Trang chủ</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="app-container">
+
+    <!-- Tester Task Banner -->
+    <div class="test-task-banner">
+      <h3>🎯 Tình huống trải nghiệm Tester</h3>
+      <p>
+        Bạn đang học dở bài <b>RAG (Retrieval-Augmented Generation)</b> trên VLearn và vừa <b>làm sai quiz 2 lần</b>. Hãy thử lần lượt từng phương án <b>A, B, C</b> dưới đây để xác định lỗ hổng kiến thức nền và quay lại hoàn thành bài học.
+      </p>
+      <div style="margin-top: 10px;">
+        <span class="highlight-quote">🗣️ Xin vui lòng nói rõ suy nghĩ của bạn sau quá trình thử nghiệm 3 phương án tương tác.</span>
+      </div>
+    </div>
+
+    <!-- Common Context Screen (70% Shared Fixture) -->
+    <section class="card lesson-context-card">
+      <div class="lesson-meta">
+        <span class="badge badge-purple">📚 Khóa học: AI & RAG Engineering</span>
+        <span class="badge badge-danger">⚠️ Đang bị mắc kẹt (Failed 2 lần)</span>
+        <span class="badge badge-info">⏱️ Mục tiêu: Quay lại bài trong &lt; 10 phút</span>
+      </div>
+
+      <h1 class="card-title">Bài 4: Kỹ thuật Chia đoạn (Chunking) và Truy xuất (Top-k Retrieval)</h1>
+      <p style="color: var(--text-secondary); font-size: 14.5px; margin-bottom: 16px;">
+        Bạn đã học qua lý thuyết cơ bản và làm bài trắc nghiệm củng cố kiến thức cuối bài, nhưng cả 2 lần nộp bài gần nhất đều chưa đạt yêu cầu.
+      </p>
+
+      <!-- Quiz Failure Box -->
+      <div class="quiz-failure-box">
+        <div style="font-weight: 700; color: #9F1239; font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+          <span>❌ Kết quả kiểm tra gần nhất (2/2 câu sai):</span>
+        </div>
+
+        <div class="quiz-item-fail">
+          <div class="fail-icon">✕</div>
+          <div class="quiz-fail-detail">
+            <b>Câu 1:</b> Khi chia văn bản dài thành các đoạn nhỏ (chunking), khoảng gối (chunk overlap) bao nhiêu là đủ?<br>
+            <span>Đáp án bạn đã chọn: </span><span class="wrong-choice">0 từ (không cần gối)</span> — <i>Sai: mất ngữ cảnh giữa các đoạn cắt.</i>
+          </div>
+        </div>
+
+        <div class="quiz-item-fail">
+          <div class="fail-icon">✕</div>
+          <div class="quiz-fail-detail">
+            <b>Câu 2:</b> Khi truy xuất tài liệu cho mô hình sinh (Top-k Retrieval), chọn k thế nào là tối ưu?<br>
+            <span>Đáp án bạn đã chọn: </span><span class="wrong-choice">k = 1 luôn tốt nhất vì ngắn gọn</span> — <i>Sai: không đủ ngữ cảnh đối chiếu.</i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8-10 Summary (Context Fixture) -->
+      <details class="slide-summary-box" open>
+        <summary>📑 Tóm tắt nội dung bài học (Slide 8 – 10)</summary>
+        <div class="slide-summary-content">
+          • <b>RAG Pipeline:</b> Văn bản gốc → Chia nhỏ (Chunking) → Biến thành Vector (Embedding) → Lưu vào Vector DB → Khi có câu hỏi: Tìm kiếm top-k đoạn tương đồng nhất → Đưa vào LLM sinh câu trả lời.<br>
+          • <b>Chunk Overlap:</b> Khoảng văn bản bị lặp lại ở điểm giao giữa 2 đoạn kề nhau, đảm bảo ý câu ở cuối đoạn trước không bị ngắt cụt.<br>
+          • <b>Lịch sử học tập gần nhất:</b> Bạn đã xem video 18 phút về <i>Vector Embedding</i> và đã mở slide 8–10 hai lần.
+        </div>
+      </details>
+    </section>
+
+    <!-- Three Options Selection Grid -->
+    <section>
+      <div style="margin-bottom: 16px;">
+        <h2 style="font-size: 20px; font-weight: 800; color: var(--text-main);">Ba phương án giải quyết (Human–AI Prototypes)</h2>
+        <p style="font-size: 14px; color: var(--text-muted);">
+          Cùng một tình huống mắc kẹt nhưng có ba cách phân chia quyền kiểm soát và trách nhiệm giữa bạn và hệ thống:
+        </p>
+      </div>
+
+      <div class="options-grid">
+
+        <!-- Option A Card -->
+        <div class="option-card">
+          <div class="option-card-header">
+            <span class="option-letter letter-a">OPTION A</span>
+            <h3 class="option-title">AI Gợi Ý Dẫn Dắt (2 Bước)</h3>
+            <div class="option-spectrum">
+              <div>🤖 AI-Initiated</div>
+              <div><span class="human-ai-pill pill-act">Gợi ý &amp; Quyết định</span></div>
+            </div>
+          </div>
+          <p class="option-desc">
+            Trạng thái trước kích hoạt tại bài học → AI chủ động đưa ra gợi ý giải pháp → Người dùng thao tác chấp nhận, đổi hướng hoặc từ chối.
+          </p>
+          <div class="option-meta-table">
+            <div class="option-meta-row">
+              <span>Cơ chế then chốt:</span>
+              <span>Trước kích hoạt → Gợi ý → Thao tác</span>
+            </div>
+            <div class="option-meta-row">
+              <span>Quyền quyết định:</span>
+              <span>AI gợi ý, User thực thi</span>
+            </div>
+            <div class="option-meta-row">
+              <span>Đánh đổi (Trade-off):</span>
+              <span>Rõ ràng, trực quan nhưng theo luồng</span>
+            </div>
+          </div>
+          <div style="margin-top: 20px;">
+            <a href="option-a.html" class="btn btn-secondary btn-block">Trải nghiệm Phương án A →</a>
+          </div>
+        </div>
+
+        <!-- Option B Card -->
+        <div class="option-card card-b" style="border-width: 2.5px;">
+          <div class="option-card-header">
+            <span class="option-letter letter-b">OPTION B</span>
+            <h3 class="option-title">Đối Thoại 2 Chiều</h3>
+            <div class="option-spectrum">
+              <div>👤 User-Led</div>
+              <div><span class="human-ai-pill pill-dont-act">Có nút Chỉnh sửa / Can thiệp</span></div>
+            </div>
+          </div>
+          <p class="option-desc">
+            Đối thoại 2 chiều Người ↔ AI. Người học nắm quyền cao nhất, có nút chỉnh sửa trực tiếp góc độ giải thích, đổi hướng câu hỏi hoặc tự sửa ghi chú.
+          </p>
+          <div class="option-meta-table">
+            <div class="option-meta-row">
+              <span>Cơ chế then chốt:</span>
+              <span>Đối thoại 2 chiều + Nút chỉnh sửa</span>
+            </div>
+            <div class="option-meta-row">
+              <span>Quyền quyết định:</span>
+              <span>100% User làm chủ &amp; điều phối</span>
+            </div>
+            <div class="option-meta-row">
+              <span>Đánh đổi (Trade-off):</span>
+              <span>Kiểm soát tối đa, cần chủ động</span>
+            </div>
+          </div>
+          <div style="margin-top: 20px;">
+            <a href="option-b.html" class="btn btn-primary btn-block">Trải nghiệm Phương án B →</a>
+          </div>
+        </div>
+
+        <!-- Option C Card -->
+        <div class="option-card">
+          <div class="option-card-header">
+            <span class="option-letter letter-c">OPTION C</span>
+            <h3 class="option-title">AI Xử Lý Ngầm &amp; Ngoại Lệ</h3>
+            <div class="option-spectrum">
+              <div>⚙️ Autonomous Background</div>
+              <div><span class="human-ai-pill pill-ask">Duyệt &amp; Báo Ngoại Lệ</span></div>
+            </div>
+          </div>
+          <p class="option-desc">
+            AI tự động chạy ngầm chuẩn bị sẵn giải pháp. Người học giữ quyền kiểm soát tại điểm Duyệt kết quả (Approve) hoặc Can thiệp ngoại lệ (Override).
+          </p>
+          <div class="option-meta-table">
+            <div class="option-meta-row">
+              <span>Cơ chế then chốt:</span>
+              <span>Tự động ngầm + Điểm can thiệp</span>
+            </div>
+            <div class="option-meta-row">
+              <span>Quyền quyết định:</span>
+              <span>Duyệt áp dụng / Báo ngoại lệ</span>
+            </div>
+            <div class="option-meta-row">
+              <span>Đánh đổi (Trade-off):</span>
+              <span>Rất rảnh tay, cần tỉnh táo khi duyệt</span>
+            </div>
+          </div>
+          <div style="margin-top: 20px;">
+            <a href="option-c.html" class="btn btn-secondary btn-block">Trải nghiệm Phương án C →</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Facilitator & Tester Instructions -->
+    <div style="text-align: center; margin-top: 30px;">
+      <p class="tester-note-pill">
+        💡 Hướng dẫn: Thử lần lượt A → Trang chủ → B → Trang chủ → C. Mỗi phương án khoảng 4 phút.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="vlearn-footer">
+    <div>VLearn EdTech Prototype • Bài Lab Day 18 Track 1 • Nhóm FinTech</div>
+    <div style="margin-top: 4px; color: var(--text-light);">Tạ Việt Cường (2A202602560) • Nguyễn Văn Thăng • Nguyễn Anh Dũng</div>
+  </footer>
+
+</body>
+</html>

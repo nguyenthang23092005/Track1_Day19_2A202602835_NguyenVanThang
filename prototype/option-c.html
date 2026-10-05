@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VLearn — Option C: AI Xử lý ngầm & Duyệt / Báo ngoại lệ (Nguyễn Văn Thăng)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="vlearn-header">
+    <div class="vlearn-nav-inner">
+      <div class="brand-wrapper">
+        <div class="brand-badge">VLearn</div>
+        <div class="course-crumb">
+          <span>AI Engineering</span>
+          <span class="crumb-sep">/</span>
+          <span>Bài 4: Chunking &amp; Retrieval</span>
+          <span class="crumb-sep">/</span>
+          <span class="crumb-active">Option C (Xử lý ngầm &amp; Ngoại lệ)</span>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <span class="human-ai-pill pill-ask">Autonomous Background • Exception-based</span>
+        <a href="index.html" class="btn-reset-nav">🏠 Trang chủ</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="app-container">
+
+    <!-- Common Lesson Context Reminder (70% shared fixture) -->
+    <div class="card lesson-context-card" style="padding: 16px 20px; margin-bottom: 20px;">
+      <div class="lesson-meta" style="margin-bottom: 6px;">
+        <span class="badge badge-purple">Bối cảnh chung (Bài 4 RAG)</span>
+        <span class="badge badge-danger">Sai Quiz 2 lần (Overlap 0 từ &amp; k=1)</span>
+        <span class="badge badge-info">Slide 8-10 đã mở 2 lần</span>
+      </div>
+      <div style="font-size: 13.5px; color: var(--text-secondary);">
+        <b>Điểm khác biệt cốt lõi ở Option C:</b> AI tự động xử lý ngầm (Background Autonomous Processing). Người học không cần kích hoạt thủ công, AI tự chuẩn bị sẵn kết quả giải pháp. Con người giữ vai trò kiểm soát ở <b>điểm duyệt kết quả</b> hoặc <b>can thiệp báo ngoại lệ</b> khi AI phán đoán sai.
+      </div>
+    </div>
+
+    <!-- Main Interaction Card -->
+    <section class="card" style="border-top: 4px solid #10B981;">
+      
+      <!-- Header -->
+      <div class="interaction-header">
+        <div>
+          <div class="interaction-meta-top">
+            <span class="option-letter letter-c">OPTION C</span>
+            <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Nguyễn Văn Thăng phụ trách</span>
+          </div>
+          <h2 class="interaction-title">AI Tự Động Xử Lý Ngầm &amp; Điểm Can Thiệp Ngoại Lệ</h2>
+        </div>
+        <a href="index.html" class="btn btn-secondary" style="font-size: 13px; padding: 6px 12px;">
+          Đóng màn hình
+        </a>
+      </div>
+
+      <!-- Human-AI Expectation Banner -->
+      <div class="expectation-banner" style="background: #ECFDF5; border-color: #A7F3D0;">
+        <span class="exp-icon">⚙️</span>
+        <div>
+          <b>Cơ chế xử lý ngầm &amp; Duyệt kết quả:</b> Ngay khi phát hiện bạn sai Quiz lần 2, hệ thống tự động biên soạn sẵn gói bổ túc. Bạn chỉ cần <b>Duyệt (Approve)</b> để áp dụng, hoặc kích hoạt <b>Ngoại lệ (Exception)</b> để phủ quyết nếu phát hiện AI suy luận sai.
+        </div>
+      </div>
+
+      <!-- Autonomous Background Engine Simulator (Dữ liệu mẫu thực tế) -->
+      <div class="autonomous-engine-box">
+        <div style="color: #94A3B8; font-size: 11.5px; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px;">
+          ⚡ TIẾN TRÌNH AI TỰ ĐỘNG CHẠY NGẦM (BACKGROUND EVENT LOGS):
+        </div>
+        <div class="auto-log-line">
+          <span style="color:#64748B;">[10:45:02]</span>
+          <span class="log-tag-done">EVENT_FAIL</span>
+          <span>Phát hiện học viên nộp sai lần 2 tại Quiz Bài 4 (Overlap 0 từ &amp; k=1).</span>
+        </div>
+        <div class="auto-log-line">
+          <span style="color:#64748B;">[10:45:03]</span>
+          <span class="log-tag-done">SCAN_HISTORY</span>
+          <span>Quét dữ liệu: Đã xem 18p video Embedding; Mở slide 8-10 nhưng lướt nhanh ranh giới chunk.</span>
+        </div>
+        <div class="auto-log-line">
+          <span style="color:#64748B;">[10:45:04]</span>
+          <span class="log-tag-wait">AUTO_DRAFT</span>
+          <span>Đã tự động biên soạn Kế hoạch ôn tập 60s &amp; Đang chờ Human Approval...</span>
+        </div>
+      </div>
+
+      <!-- MAIN STATE 1: MÀN HÌNH DUYỆT KẾT QUẢ (Review & Approval State) -->
+      <div id="approval-screen">
+        
+        <div style="margin-bottom: 14px;">
+          <span class="badge badge-success" style="font-size: 13px; padding: 6px 12px;">
+            📑 Kết quả AI đã tự động chuẩn bị sẵn cho bạn:
+          </span>
+        </div>
+
+        <!-- Result Card Drafted by AI -->
+        <div class="refresher-card" style="border-color: #10B981; background: #F0FDF4; margin-top: 10px;">
+          <div class="refresher-header" style="border-bottom-color: #BBF7D0;">
+            <div>
+              <span class="badge badge-info" style="margin-bottom: 4px;">Gói ôn cấp tốc tự động (Tạo lúc 10:45:04)</span>
+              <h3 class="refresher-title" style="color: #065F46;">
+                Trọng tâm: Kỹ thuật Chunk Overlap bảo toàn ngữ cảnh &amp; Top-k tương hỗ
+              </h3>
+            </div>
+            <span class="badge badge-success">Sẵn sàng áp dụng</span>
+          </div>
+
+          <div class="refresher-body">
+            <p style="font-size: 14.5px; color: #064E3B; line-height: 1.6;">
+              • <b>Kết quả chẩn đoán tự động:</b> 80% nguyên nhân làm sai là do quan niệm sai về Overlap = 0 từ. AI đã tự trích lọc 3 câu quan trọng nhất từ Slide 9 để bạn nắm vững bản chất gối đầu.<br>
+              • <b>Hành động tự động đề xuất:</b> Thay thế bài học lý thuyết dài bằng 1 ví dụ thực tế và chuyển bạn trực tiếp về câu hỏi trắc nghiệm số 1 để nộp lại.
+            </p>
+          </div>
+        </div>
+
+        <!-- TWO MAIN ACTIONS: APPROVAL vs EXCEPTION INTERVENTION -->
+        <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 24px;">
+          
+          <!-- Primary: Approve -->
+          <div style="background: #F0FDF4; border: 2px solid #86EFAC; border-radius: var(--radius-md); padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px;">
+            <div>
+              <b style="font-size: 15px; color: #166534; display: block;">1. Điểm duyệt kết quả (Approve &amp; Apply):</b>
+              <span style="font-size: 13px; color: #15803D;">Nếu bạn thấy AI phân tích đúng, bấm duyệt để áp dụng giải pháp và làm tiếp.</span>
+            </div>
+            <button class="btn btn-primary" onclick="approvePlan()" style="background: #16A34A; flex-shrink: 0; padding: 10px 18px;">
+              ✅ DUYỆT &amp; ÁP DỤNG NGAY
+            </button>
+          </div>
+
+          <!-- Secondary / Critical: Exception Intervention Point -->
+          <div style="background: #FFF1F2; border: 2px dashed #FDA4AF; border-radius: var(--radius-md); padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px;">
+            <div>
+              <b style="font-size: 15px; color: #9F1239; display: block;">2. Điểm can thiệp qua ngoại lệ (Exception Intervention):</b>
+              <span style="font-size: 13px; color: #BE123C;">Nếu bạn thấy AI suy đoán sai ngữ cảnh hoặc tự tiện áp đặt giải pháp không mong muốn.</span>
+            </div>
+            <button class="btn btn-outline-danger" onclick="triggerException()" style="flex-shrink: 0; padding: 10px 18px; font-weight: 700;">
+              ⚠️ CAN THIỆP / BÁO NGOẠI LỆ
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- MAIN STATE 2: EXCEPTION INTERVENTION PANEL (Nổi bật điểm can thiệp) -->
+      <div id="exception-panel" class="hidden">
+        
+        <div class="exception-panel">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <span style="font-size: 26px;">🚨</span>
+            <h3 style="font-size: 18px; font-weight: 800; color: #9F1239;">
+              BẢNG CAN THIỆP NGOẠI LỆ (HUMAN OVERRIDE PANEL)
+            </h3>
+          </div>
+          
+          <p style="font-size: 14px; color: #881337; margin-bottom: 16px;">
+            Bạn vừa chặn tiến trình tự động của AI. Vui lòng chọn lý do ngoại lệ để hệ thống thu hồi quyền tự động hóa:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+            <label class="choice-btn" style="background:#fff; border-color:#FECDD3;">
+              <input type="radio" name="ex_reason" checked style="margin-right: 8px;">
+              <span><b>Ngoại lệ 1:</b> Tôi đã nắm chắc lý thuyết này, làm sai là do đọc lướt nhầm đề bài (False Alarm).</span>
+            </label>
+            <label class="choice-btn" style="background:#fff; border-color:#FECDD3;">
+              <input type="radio" name="ex_reason" style="margin-right: 8px;">
+              <span><b>Ngoại lệ 2:</b> AI đoán sai trọng tâm (tôi muốn chuyển sang tự chọn khái niệm qua Option B).</span>
+            </label>
+            <label class="choice-btn" style="background:#fff; border-color:#FECDD3;">
+              <input type="radio" name="ex_reason" style="margin-right: 8px;">
+              <span><b>Ngoại lệ 3:</b> Tắt toàn bộ tính năng tự động xử lý ngầm của AI trong bài học này.</span>
+            </label>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <button class="btn btn-secondary" onclick="cancelException()">
+              ← Quay lại xem kết quả duyệt
+            </button>
+            <button class="btn btn-primary" onclick="confirmException()" style="background: #E11D48; border-color: #BE123C;">
+              🛑 Xác nhận can thiệp &amp; Thu hồi quyền của AI
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action Confirmation Feedback -->
+      <div id="status-feedback" class="hidden" style="margin-top: 20px; padding: 16px 20px; border-radius: var(--radius-md); font-size: 14.5px;"></div>
+
+    </section>
+
+    <!-- Annotation Box for Observer -->
+    <div style="margin-top: 24px; padding: 14px 18px; background: #F1F5F9; border-radius: var(--radius-md); font-size: 12.5px; color: var(--text-muted); border: 1px dashed var(--border-strong);">
+      <b>Ghi chú tương tác Option C:</b> Tập trung thể hiện kịch bản <i>AI tự động xử lý ngầm (Autonomous Background Pipeline)</i> và làm nổi bật 2 điểm kiểm soát của con người: <i>(1) Điểm Duyệt kết quả (Human Review &amp; Approval)</i> và <i>(2) Điểm Can thiệp qua Ngoại lệ (Exception-based Intervention)</i> khi hệ thống AI phán đoán sai lệch.
+    </div>
+
+  </main>
+
+  <!-- Script for Option C -->
+  <script>
+    function approvePlan() {
+      const fb = document.getElementById('status-feedback');
+      fb.classList.remove('hidden');
+      fb.style.background = '#ECFDF5';
+      fb.style.border = '1.5px solid #6EE7B7';
+      fb.style.color = '#065F46';
+      fb.innerHTML = `
+        <b>🎉 ĐÃ PHÊ DUYỆT KẾT QUẢ CỦA AI!</b><br>
+        Kế hoạch ôn tập 60s đã được áp dụng vào tài khoản của bạn. Hệ thống đang chuyển hướng bạn về lại bài Quiz để làm câu trắc nghiệm số 1...
+        <div style="margin-top: 10px;">
+          <a href="index.html" class="btn btn-primary" style="background:#059669; font-size:13px; padding:6px 14px;">Quay về Quiz ngay</a>
+        </div>
+      `;
+      document.getElementById('approval-screen').style.opacity = '0.6';
+    }
+
+    function triggerException() {
+      document.getElementById('approval-screen').classList.add('hidden');
+      document.getElementById('exception-panel').classList.remove('hidden');
+    }
+
+    function cancelException() {
+      document.getElementById('exception-panel').classList.add('hidden');
+      document.getElementById('approval-screen').classList.remove('hidden');
+    }
+
+    function confirmException() {
+      const fb = document.getElementById('status-feedback');
+      fb.classList.remove('hidden');
+      fb.style.background = '#FEF2F2';
+      fb.style.border = '1.5px solid #FCA5A5';
+      fb.style.color = '#991B1B';
+      fb.innerHTML = `
+        <b>🛑 ĐÃ XỬ LÝ NGOẠI LỆ THÀNH CÔNG (HUMAN OVERRIDE):</b><br>
+        Toàn bộ đề xuất tự động của AI đã bị thu hồi. Trợ lý ngầm đã được tạm dừng. Quyền kiểm soát hoàn toàn thuộc về bạn.<br>
+        <div style="margin-top: 10px; display: flex; gap: 10px;">
+          <a href="option-b.html" class="btn btn-primary" style="background:#4F46E5; font-size:13px; padding:6px 14px;">Chuyển sang Option B để tự chọn →</a>
+          <a href="index.html" class="btn btn-secondary" style="font-size:13px; padding:6px 14px;">Về Trang chủ làm tiếp</a>
+        </div>
+      `;
+      document.getElementById('exception-panel').classList.add('hidden');
+    }
+  </script>
+
+  <!-- Footer -->
+  <footer class="vlearn-footer">
+    <div>VLearn Prototype • Option C: Tự động ngầm &amp; Duyệt ngoại lệ • Nguyễn Văn Thăng</div>
+  </footer>
+
+</body>
+</html>

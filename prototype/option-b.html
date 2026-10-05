@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VLearn — Option B: Đối thoại 2 chiều & Quyền kiểm soát User (Tạ Việt Cường)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="vlearn-header">
+    <div class="vlearn-nav-inner">
+      <div class="brand-wrapper">
+        <div class="brand-badge">VLearn</div>
+        <div class="course-crumb">
+          <span>AI Engineering</span>
+          <span class="crumb-sep">/</span>
+          <span>Bài 4: Chunking &amp; Retrieval</span>
+          <span class="crumb-sep">/</span>
+          <span class="crumb-active">Option B (Đối thoại 2 chiều &amp; Quyền User)</span>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <span class="human-ai-pill pill-dont-act">User-Led • Đối thoại 2 chiều</span>
+        <a href="index.html" class="btn-reset-nav">🏠 Trang chủ</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="app-container">
+
+    <!-- Common Lesson Context Reminder (70% shared fixture) -->
+    <div class="card lesson-context-card" style="padding: 16px 20px; margin-bottom: 20px;">
+      <div class="lesson-meta" style="margin-bottom: 6px;">
+        <span class="badge badge-purple">Bối cảnh chung (Bài 4 RAG)</span>
+        <span class="badge badge-danger">Sai Quiz 2 lần (Overlap 0 từ &amp; k=1)</span>
+        <span class="badge badge-info">Slide 8-10 đã mở 2 lần</span>
+      </div>
+      <div style="font-size: 13.5px; color: var(--text-secondary);">
+        <b>Điểm khác biệt cốt lõi ở Option B:</b> Người học nắm giữ quyền kiểm soát cao nhất (User Agency). Không bị AI dẫn dắt thụ động như Option A, cũng không để AI tự quyết ngầm như Option C. Bạn tương tác thông qua <b>luồng đối thoại 2 chiều</b> và có toàn quyền <b>chỉnh sửa, can thiệp góc nhìn giải thích</b> của AI.
+      </div>
+    </div>
+
+    <!-- Main Interaction Card -->
+    <section class="card" style="border-top: 4px solid var(--primary);">
+      
+      <!-- Header -->
+      <div class="interaction-header">
+        <div>
+          <div class="interaction-meta-top">
+            <span class="option-letter letter-b">OPTION B</span>
+            <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Tạ Việt Cường (2A202602560) phụ trách chính</span>
+          </div>
+          <h2 class="interaction-title">Đối Thoại 2 Chiều &amp; Bảng Kiểm Soát Quyền Hạn User</h2>
+        </div>
+        <a href="index.html" class="btn btn-secondary" style="font-size: 13px; padding: 6px 12px;">
+          Bỏ qua đối thoại
+        </a>
+      </div>
+
+      <!-- Human-AI Expectation & Agency Banner -->
+      <div class="expectation-banner" style="background: #EEF2FF; border-color: #C7D2FE;">
+        <span class="exp-icon">👑</span>
+        <div>
+          <b>Quyền kiểm soát thuộc về bạn:</b> Bạn là người đặt đầu bài, điều phối góc nhìn và yêu cầu AI giải thích theo đúng cách bạn muốn tiếp thu. Sử dụng các nút chỉnh sửa bên dưới để ra lệnh cho AI thay đổi cách tiếp cận.
+        </div>
+      </div>
+
+      <!-- Two-Way Dialogue Thread -->
+      <div style="margin-bottom: 12px;">
+        <span class="badge badge-purple">💬 Luồng đối thoại 2 chiều (User ↔ AI)</span>
+      </div>
+
+      <div class="dialogue-thread" id="chat-thread">
+        
+        <!-- Turn 1: User Query -->
+        <div class="chat-bubble bubble-user">
+          <div class="bubble-user-sender">👤 Người học (Bạn):</div>
+          <div>Tôi vừa làm sai câu Quiz số 1. Hãy giải thích cho tôi: <b>Tại sao việc đặt Chunk Overlap = 0 từ lại bị coi là sai lầm nghiêm trọng?</b></div>
+        </div>
+
+        <!-- Turn 2: AI Response -->
+        <div class="chat-bubble bubble-ai" id="ai-main-response">
+          <div class="bubble-ai-sender">🤖 Trợ lý AI (Phản hồi ban đầu):</div>
+          <div id="ai-response-text">
+            Khi cắt một văn bản dài thành các đoạn nhỏ 500 từ, các câu văn nằm ngay tại ranh giới cắt sẽ bị ngắt làm đôi. Nếu đặt <b>Overlap = 0 từ</b>, đoạn thứ nhất chỉ chứa nửa đầu câu và đoạn thứ hai chỉ chứa nửa sau câu. Hậu quả là cả 2 đoạn đều mất ý nghĩa trọn vẹn, khiến hệ thống tìm kiếm ngữ nghĩa không thể truy xuất đúng câu trả lời.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- USER EDIT & CONTROL TOOLBAR (FEATURE NỔI BẬT THEO YÊU CẦU) -->
+      <div class="agency-toolbar">
+        <div class="agency-toolbar-title">
+          <span>🛠️ NÚT CHỈNH SỬA / KIỂM SOÁT CỦA USER (Tác động trực tiếp lên AI):</span>
+        </div>
+        <p style="font-size: 12.5px; color: #4338CA; margin-bottom: 10px;">
+          Bạn chưa hài lòng với cách AI giải thích? Bấm nút can thiệp để ép AI thay đổi luồng đối thoại:
+        </p>
+        <div class="agency-chips-group">
+          <button class="agency-chip" onclick="userModify('analogy')">
+            ✏️ Đổi sang: Ví dụ đời thực dễ hiểu
+          </button>
+          <button class="agency-chip" onclick="userModify('compare')">
+            ✏️ Đổi sang: Bảng so khớp 0 từ vs 50 từ
+          </button>
+          <button class="agency-chip" onclick="userModify('concise')">
+            ✏️ Đổi sang: Tóm tắt 1 câu siêu ngắn (&lt; 25 từ)
+          </button>
+          <button class="agency-chip" onclick="userModify('topk')">
+            🔄 Đổi chủ đề: Chuyển sang chất vấn câu Top-k Retrieval
+          </button>
+        </div>
+      </div>
+
+      <!-- User Interactive Custom Note / Takeaway (Quyền sửa đổi nội dung) -->
+      <div style="background: var(--surface-alt); border: 1.5px solid var(--border-light); border-radius: var(--radius-md); padding: 16px; margin: 18px 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <b style="font-size: 13.5px; color: var(--text-main);">📝 Ghi chú tự chỉnh sửa của bạn (User Editable Takeaway):</b>
+          <span style="font-size: 11.5px; color: var(--text-muted);">Bạn có quyền sửa lại câu chốt trước khi lưu</span>
+        </div>
+        <textarea id="user-note" style="width: 100%; height: 60px; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); font-family: inherit; font-size: 13.5px; resize: vertical;">Chunk Overlap phải luôn &gt; 0 để giữ ngữ cảnh câu cắt ngang. Khuyến nghị đặt từ 10% đến 20% độ dài chunk (ví dụ chunk 500 từ thì overlap 50 từ).</textarea>
+      </div>
+
+      <!-- Action & Recovery Bar -->
+      <div class="control-bar" style="background: transparent; border-top: none; padding: 0;">
+        <button class="btn btn-secondary" onclick="resetDialogue()">
+          🔄 Khôi phục đối thoại ban đầu
+        </button>
+        
+        <div style="display: flex; gap: 10px;">
+          <a href="index.html" class="btn btn-ghost">Đóng đối thoại</a>
+          <button class="btn btn-primary" onclick="alert('Đã lưu ghi chú của bạn! Đang chuyển về bài học để làm lại Quiz.')">
+            ✅ Tôi đã làm chủ kiến thức, quay lại Quiz
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Annotation Box for Observer -->
+    <div style="margin-top: 24px; padding: 14px 18px; background: #F1F5F9; border-radius: var(--radius-md); font-size: 12.5px; color: var(--text-muted); border: 1px dashed var(--border-strong);">
+      <b>Ghi chú tương tác Option B:</b> Nổi bật quyền hạn tối cao của User thông qua luồng <i>đối thoại 2 chiều</i>. Người dùng sở hữu bộ công cụ can thiệp trực tiếp <i>(Nút chỉnh sửa góc độ giải thích, chuyển hướng chủ đề, tự gõ sửa ghi chú)</i>, hoàn toàn phân biệt với tính bị động ở Option A và tính tự động ngầm ở Option C.
+    </div>
+
+  </main>
+
+  <!-- Script for Option B Two-Way Dialogue & User Edit Controls -->
+  <script>
+    function userModify(mode) {
+      const thread = document.getElementById('chat-thread');
+
+      if (mode === 'analogy') {
+        thread.innerHTML += `
+          <div class="chat-bubble bubble-user">
+            <div class="bubble-user-sender">👤 Bạn can thiệp:</div>
+            <div>Hãy giải thích lại bằng <b>một ví dụ đời thực thật gần gũi</b>!</div>
+          </div>
+          <div class="chat-bubble bubble-ai">
+            <div class="bubble-ai-sender">🤖 AI phản hồi (Theo góc nhìn đời thực):</div>
+            <div>
+              💡 <b>Ví dụ cuộn phim ảnh:</b> Nếu bạn cắt một dải ảnh mà cắt sát mép (overlap = 0), bạn sẽ cắt đứt đôi khuôn mặt của người trong bức ảnh. Nếu gối đầu vài milimet (overlap &gt; 0), cả 2 bức ảnh cắt ra đều giữ trọn vẹn khuôn mặt!
+            </div>
+          </div>
+        `;
+        document.getElementById('user-note').value = 'Ví dụ cuộn phim: Overlap là phần gối mép giúp không cắt đôi khuôn mặt ngữ cảnh.';
+      } else if (mode === 'compare') {
+        thread.innerHTML += `
+          <div class="chat-bubble bubble-user">
+            <div class="bubble-user-sender">👤 Bạn can thiệp:</div>
+            <div>Lập bảng so sánh đối đầu giữa <b>Overlap = 0 từ</b> và <b>Overlap = 50 từ</b>!</div>
+          </div>
+          <div class="chat-bubble bubble-ai">
+            <div class="bubble-ai-sender">🤖 AI phản hồi (Theo định dạng so sánh):</div>
+            <div>
+              ⚖️ <b>So sánh trực quan:</b><br>
+              • <b>Overlap = 0 từ:</b> Tiết kiệm 5% dung lượng lưu trữ, nhưng câu ranh giới bị cụt ý → Tỉ lệ trả lời sai quiz: 85%.<br>
+              • <b>Overlap = 50 từ:</b> Tốn thêm một lượng nhỏ bộ nhớ, nhưng câu cắt ngang được bảo toàn ở đoạn kế tiếp → Tỉ lệ đúng quiz: 98%.
+            </div>
+          </div>
+        `;
+        document.getElementById('user-note').value = 'Bảng so sánh: Overlap 50 từ tốn thêm tí bộ nhớ nhưng cứu được 85% câu hỏi ranh giới.';
+      } else if (mode === 'concise') {
+        thread.innerHTML += `
+          <div class="chat-bubble bubble-user">
+            <div class="bubble-user-sender">👤 Bạn can thiệp:</div>
+            <div>Tôi cần <b>1 câu chốt siêu ngắn gọn &lt; 25 từ</b> để nhớ ngay!</div>
+          </div>
+          <div class="chat-bubble bubble-ai">
+            <div class="bubble-ai-sender">🤖 AI phản hồi (Phiên bản siêu ngắn):</div>
+            <div>
+              ⚡ <b>"Chunk overlap là phần gối đầu giúp bảo toàn nguyên vẹn ngữ cảnh của những câu bị ngắt đôi."</b> (19 từ)
+            </div>
+          </div>
+        `;
+        document.getElementById('user-note').value = 'Chunk overlap là phần gối đầu giúp bảo toàn nguyên vẹn ngữ cảnh của những câu bị ngắt đôi.';
+      } else if (mode === 'topk') {
+        thread.innerHTML += `
+          <div class="chat-bubble bubble-user">
+            <div class="bubble-user-sender">👤 Bạn đổi chủ đề:</div>
+            <div>Bây giờ chuyển sang câu hỏi số 2: <b>Tại sao chọn k = 1 lại không tối ưu?</b></div>
+          </div>
+          <div class="chat-bubble bubble-ai">
+            <div class="bubble-ai-sender">🤖 AI phản hồi (Chủ đề Top-k):</div>
+            <div>
+              🔍 Khi đặt k=1, mô hình chỉ nhận duy nhất 1 đoạn văn. Nếu câu trả lời cần tổng hợp thông tin từ 2 nguồn tài liệu khác nhau, mô hình chắc chắn sẽ trả lời thiếu ý hoặc bịa đặt (hallucination). K tối ưu thường từ 3 đến 5.
+            </div>
+          </div>
+        `;
+        document.getElementById('user-note').value = 'Top-k: Không chọn k=1 vì thiếu dữ liệu tổng hợp. Chọn k từ 3-5 là an toàn.';
+      }
+
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    function resetDialogue() {
+      location.reload();
+    }
+  </script>
+
+  <!-- Footer -->
+  <footer class="vlearn-footer">
+    <div>VLearn Prototype • Option B: Đối thoại 2 chiều &amp; Quyền User • Tạ Việt Cường (2A202602560)</div>
+  </footer>
+
+</body>
+</html>
